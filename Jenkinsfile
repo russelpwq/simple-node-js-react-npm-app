@@ -29,7 +29,7 @@ pipeline {
 
         stage('Deliver') { 
             steps {
-                // Run the deliver scrip
+                // Run the deliver script
                 sh './jenkins/scripts/deliver.sh'
                 
                 // Wait for user input before proceeding
@@ -43,8 +43,13 @@ pipeline {
 
     post {
         always {
-            // Publish SonarQube analysis report
-            recordIssues(enabledForFailure: true, tool: [name: 'SonarQube'])
+            emailext(
+                to: 'russelpoon25@gmail.com',
+                subject: "Build ${currentBuild.fullDisplayName}",
+                body: "The build ${currentBuild.fullDisplayName} has completed.\n\n" +
+                      "Status: ${currentBuild.result}\n" +
+                      "Build URL: ${env.BUILD_URL}"
+            )
         }
     }
 }
