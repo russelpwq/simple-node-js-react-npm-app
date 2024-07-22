@@ -43,7 +43,8 @@ pipeline {
 
     post {
         always {
-            recordIssues enabledForFailure: true, tool: sonarQube()
+            // Publish SonarQube analysis report
+            recordIssues(enabledForFailure: true, tool: [name: 'SonarQube'])
         }
     }
 }
