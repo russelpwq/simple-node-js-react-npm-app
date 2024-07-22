@@ -16,17 +16,16 @@ pipeline {
             }
         }
 
-        stage ('OWASP Dependency-Check Vulnerabilities') {
+        stage('Code Quality Check via SonarQube') {
             steps {
-                dependencyCheck additionalArguments: ''' 
-                    -o "./" 
-                    -s "./"
-                    -f "ALL" 
-                    --prettyPrint''', odcInstallation: 'OWASP-DC'
-
-                dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+                script {
+                    def scannerHome = tool 'SonarQubeLab';
+                    withSonarQubeEnv('SonarQubeLab') {
+                        sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=OWASP -Dsonar.sources=."
+                    }
+                }
             }
-        }     
+        }
 
         stage('Deliver') { 
             steps {
@@ -43,9 +42,8 @@ pipeline {
     }
 
     post {
-        success {
-            // Publish the DependencyCheck report if the build is successful
-            dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+        always {
+            recordIssues enabledForFailure: true, tool: sonarQube()
         }
     }
 }
