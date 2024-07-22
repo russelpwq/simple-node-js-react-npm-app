@@ -16,12 +16,17 @@ pipeline {
             }
         }
 
-        stage('OWASP DependencyCheck') {
+        stage ('OWASP Dependency-Check Vulnerabilities') {
             steps {
-                // Run OWASP DependencyCheck with specified arguments
-                dependencyCheck additionalArguments: '--format HTML --format XML', odcInstallation: 'Default'
+                dependencyCheck additionalArguments: ''' 
+                    -o "./" 
+                    -s "./"
+                    -f "ALL" 
+                    --prettyPrint''', odcInstallation: 'OWASP-DC'
+
+                dependencyCheckPublisher pattern: 'dependency-check-report.xml'
             }
-        }
+        }     
 
         stage('Deliver') { 
             steps {
