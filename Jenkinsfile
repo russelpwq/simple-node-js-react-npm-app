@@ -29,7 +29,7 @@ pipeline {
 
         stage('Deliver') { 
             steps {
-                // Run the deliver script
+                // Run the deliver scrip
                 sh './jenkins/scripts/deliver.sh'
                 
                 // Wait for user input before proceeding
