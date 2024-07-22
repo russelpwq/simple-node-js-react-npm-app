@@ -32,7 +32,7 @@ pipeline {
                 // Run the deliver script
                 sh './jenkins/scripts/deliver.sh'
                 
-                // Wait for user input before proceeding
+                // Wait for user input before proceedin
                 input message: 'Finished using the web site? (Click "Proceed" to continue)'
                 
                 // Run the kill script
