@@ -2,13 +2,6 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout SCM') {
-            steps {
-                // Checkout the source code from the specified Git repository
-                git '/home/JenkinsDependencyCheckTest'
-            }
-        }
-
         stage('Build') {
             steps {
                 // Install npm dependencies
